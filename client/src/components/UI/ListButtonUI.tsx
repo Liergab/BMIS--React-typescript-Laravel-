@@ -8,20 +8,20 @@ type ListProps = {
     icon        : ReactElement;
     label       : string;
     selnum      : number;
-    evnum       : number;
+    eventnum       : number;
     onItemClick : (index: number) => void;
 }
 
-const ListButtonUI:React.FC<ListProps> = ({icon , label, selnum, evnum, onItemClick}) => {
+const ListButtonUI:React.FC<ListProps> = ({icon , label, selnum, eventnum, onItemClick}) => {
   
 
     const handleListItemClick = () => {
-      onItemClick(evnum)
+      onItemClick(eventnum)
     };
   return (
     <>
     <ListItemButton
-        selected={evnum === selnum}
+        selected={eventnum === selnum}
         onClick={handleListItemClick}
     >
         <ListItem>
