@@ -3,9 +3,9 @@ import { Link }   from 'react-router-dom';
 import { Button } from '@mui/material';
 
 interface ButtonUIProps {
-    buttonName: string;
-    textColor?: string;
-    link? :     string;
+    buttonName : string;
+    textColor? : string;
+    link?      : string;
   }
 
 const ButtonUI:React.FC<ButtonUIProps> = ({buttonName, textColor = '#EF4040', link}) => {
