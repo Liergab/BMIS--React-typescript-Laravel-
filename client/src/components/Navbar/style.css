@@ -1,0 +1,8 @@
+.logo {
+    /* Gradient background */
+    background: linear-gradient(90deg, hsla(190, 32%, 46%, 1) 20%, hsla(300, 32%, 29%, 1) 100%, hsla(300, 32%, 29%, 1) 100%);
+    
+    /* Transparent text */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }

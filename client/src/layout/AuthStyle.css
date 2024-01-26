@@ -1,0 +1,5 @@
+.bg2-image {
+    background-image: url('../assets/images/bg2.jpg');
+    background-size: cover;
+    background-position: center;
+  }
