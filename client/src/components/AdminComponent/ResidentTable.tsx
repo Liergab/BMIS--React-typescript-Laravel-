@@ -43,7 +43,7 @@ const ResidentTable:React.FC = () => {
           <Typography variant='h5' className='text-gray-dark' sx={{fontWeight:'600'}}>
               Resident Table
           </Typography>
-          <Button variant="contained" ><span className='text-gray-dark font-medium'>Add</span></Button>
+          <Button variant="contained" ><span className=' font-medium'>Add</span></Button>
       </div>
       <div className='bg-text rounded-lg drop-shadow-2xl' style={{ height: 400, width: '100%' }}>
         <DataGrid

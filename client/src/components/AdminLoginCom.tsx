@@ -1,10 +1,12 @@
-import React       from 'react'
-import TextFieldUI from './UI/TextFieldUI'
-import {useForm}   from 'react-hook-form'
+import React       from 'react';
+import TextFieldUI from './UI/TextFieldUI';
+import {useForm}   from 'react-hook-form';
+import useToggle   from '../hooks/useToggle';
 import {
     Box,
     Button,
-    Typography }   from '@mui/material'
+    Typography }   from '@mui/material';
+import ConfirmPassword from './ConfirmPassword';
 
 type formFields = {
     email:    string;
@@ -13,7 +15,7 @@ type formFields = {
 
 
 const AdminLoginCom:React.FC = () => {
-
+    const {state, toggleState, setState} = useToggle({initialValue:false})
     const {register, handleSubmit} = useForm<formFields>({})
 
     const onSubmit = (data:formFields) => {
@@ -46,21 +48,38 @@ const AdminLoginCom:React.FC = () => {
                 innerRef={register('password')}
             />
 
-            <Button
-            // disabled={true}
-            type='submit'
-                sx={{
-                backgroundColor: '#EF4040', 
-                color:'#E8F1F3',
-                padding:'4px 40px 4px 40px',
-                '&:hover':{
+            <div className='flex w-full justify-between'>
+                <Button
+                    // disabled={true}
+                type='submit'
+                 sx={{
                     backgroundColor: '#EF4040', 
                     color:'#E8F1F3',
-                }
+                    padding:'4px 40px 4px 40px',
+                    '&:hover':{
+                        backgroundColor: '#EF4040', 
+                        color:'#E8F1F3',
+                        }
                 }}>
-                Login
-            </Button>
+                    Login
+                </Button>
+
+                <Typography 
+                 sx={{
+                    fontSize:'14px',
+                    color:"#508E9B",
+                    '&:hover': {
+                        cursor:'pointer',
+                         textDecoration: 'underline' 
+                    }
+                }}
+                onClick={toggleState}
+                >
+                    Forget Password
+                </Typography>
+                </div>
        </form>
+       {state && <ConfirmPassword setState={setState} state={state}/>}
 </>
   )
 }
