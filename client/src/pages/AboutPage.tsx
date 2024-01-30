@@ -1,4 +1,4 @@
-import React from 'react';
+
 import LandingNavComp from '../components/LandingNavComp';
 import about          from '../assets/images/about-img.png';
 import { Button }     from '@mui/material';
