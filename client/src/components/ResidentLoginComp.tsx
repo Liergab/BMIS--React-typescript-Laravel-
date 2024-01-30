@@ -28,7 +28,6 @@ const ResidentLoginComp:React.FC = () => {
 
     const {register, 
           handleSubmit,
-          setError, 
           formState:{errors, isSubmitting}} = useForm<formFields>({resolver:zodResolver(residentSchema)})
 
     const onSubmit = async(data:formFields) => {
