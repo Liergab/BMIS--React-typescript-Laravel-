@@ -6,13 +6,14 @@ interface ButtonUIProps {
     buttonName : string;
     textColor? : string;
     link?      : string;
+    size       : 'small'|'medium'
   }
 
-const ButtonUI:React.FC<ButtonUIProps> = ({buttonName, textColor = '#EF4040', link}) => {
+const ButtonUI:React.FC<ButtonUIProps> = ({buttonName, textColor = '#EF4040', link, size}) => {
   return (
     <div>
     <Link to={`/${link}`}>
-      <Button variant="contained"  style={{ background: textColor }}>
+      <Button variant="contained" size={size}  style={{ background: textColor }}>
         {buttonName}
     </Button>
     </Link>

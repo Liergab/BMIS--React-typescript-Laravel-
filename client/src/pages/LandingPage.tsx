@@ -13,13 +13,12 @@ const LandingPage:React.FC = () => {
         <div className="flex justify-between items-center px-[20px] md:px-[280px]">
           <LandingNavComp  />
         </div>
-        <div className=" flex flex-col items-center justify-center space-y-4 md:space-y-3 ">
+        <div className=" flex flex-col items-center justify-center space-y-3 ">
           <h1 className="text-text text-2xl md:text-6xl font-bold">WE ARE COMMUNITY</h1>
-
           <h2 className=" max-w-56 md:max-w-xl text-center text-xs md:text-lg text-l-text ">
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           </h2>
-          <ButtonUI buttonName="signin" link='login'/>
+          <ButtonUI buttonName="signin" link='login' size='small'/>
         </div>
       </div>
     </div>
