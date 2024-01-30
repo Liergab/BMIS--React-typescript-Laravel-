@@ -15,7 +15,7 @@ const ContactPage = () => {
     <div className="flex justify-between items-center px-[20px] md:px-[200px]">
       <LandingNavComp />
     </div>
-    <div className=" flex flex-col md:flex md:flex-row h-full items-center justify-start px-[20px] md:px-28 mt-20 md:mt-0 gap-8 md:gap-0">
+    <div className=" flex flex-col md:flex md:flex-row h-full items-center justify-start px-[20px] md:px-28 mt-14 md:mt-0 gap-8 md:gap-0">
         <div className='flex-1 hidden md:flex items-center justify-center'>
             <img src={contact}  alt="" className='w-[700px]' />
         </div>
