@@ -5,7 +5,7 @@ import { Button }     from '@mui/material';
 
 const AboutPage = () => {
   return (
-     <div className="flex flex-col  h-full w-full py-20">
+     <div className="flex flex-col  h-full w-full py-[50px]">
         <div className="flex justify-between items-center px-[200px]">
           <LandingNavComp />
         </div>
