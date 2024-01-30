@@ -28,7 +28,15 @@ const ResidentSigninComp:React.FC = () => {
         <Typography variant='h5' fontWeight={'bold'} sx={{color:"#273444"}}>
           Welcome to <span className='logo'>Bmis</span>
         </Typography>
-        <Typography sx={{color:"#8492a6", fontWeight:"600", fontSize:'14px'}}>
+        <Typography 
+          sx={{
+            color:"#8492a6", 
+            fontWeight:"600", 
+            fontSize:'16px', 
+            '@media (max-width: 600px)': {
+                fontSize: '12px',
+            },}}
+        >
           Nice to meet you! Enter your details to register.
         </Typography>
       </Box>
@@ -75,11 +83,15 @@ const ResidentSigninComp:React.FC = () => {
           sx={{
               backgroundColor: '#EF4040', 
               color:'#E8F1F3',
+              fontSize:'16px',
               padding:'4px 40px 4px 40px',
               '&:hover':{
                   backgroundColor: '#EF4040', 
                   color:'#E8F1F3',
-              }
+              },
+              '@media (max-width: 600px)': {
+                fontSize: '12px',
+            },
           }}>
             Register
         </Button>
@@ -87,10 +99,14 @@ const ResidentSigninComp:React.FC = () => {
         <Typography 
                   sx={{
                       fontWeight:'600',
-                      color:"#8492a6"
+                      color:"#8492a6",
+                      fontSize:'16px',
+                      '@media (max-width: 600px)': {
+                        fontSize: '12px',
+                    },
                   }}>
                       Dont have an account? {" "}
-                      <Link to='/login'><span className='text-primary'>sign in</span></Link>
+                      <Link to='/login'><span className='text-primary text-[12px] md:text-[16px]'>sign in</span></Link>
                   </Typography>
       </form>
   </>

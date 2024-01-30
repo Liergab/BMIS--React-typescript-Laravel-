@@ -1,17 +1,21 @@
 import React    from 'react';
 import {Box}    from '@mui/material';
 import {Outlet} from 'react-router-dom';
-import NavBar   from '../components/Navbar/NavBar';
 import './AuthStyle.css';
+import LandingNavComp from '../components/LandingNavComp';
 
 const AuthLayout:React.FC = () => {
   return (
   <>
-    <Box className='relative w-full h-screen bg-cover bg-center text-white bg2-image' > 
-    <NavBar/>
-      <Box className='lg:flex-1 flex flex-col w-full h-screen items-center place-content-center px-4 pt-28'>
+    <Box className='relative w-full h-full bg-cover bg-center text-white bg2-image' > 
+    <div className="flex flex-col  h-full py-[80px] md:py-[50px] gap-10 md:gap-0">
+        <div className="flex justify-between items-center px-[20px] md:px-[200px]">
+          <LandingNavComp />
+        </div>
+      <Box className="flex flex-col md:flex md:flex-row h-screen items-center justify-center px-[14px] md:px-28 mt-4 md:mt-8">
           <Outlet/>
       </Box> 
+      </div>
     </Box>
   </>
   )
