@@ -3,6 +3,15 @@
     background-size: cover;
     background-position: center;
   }
+
+  .containerLanding{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
   .logo {
     /* Gradient background */
     background: linear-gradient(90deg, hsla(190, 32%, 46%, 1) 20%, hsla(300, 32%, 29%, 1) 100%, hsla(300, 32%, 29%, 1) 100%);

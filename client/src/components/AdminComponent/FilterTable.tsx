@@ -1,5 +1,3 @@
-import React from 'react'
-
 const FilterTable = () => {
   return (
     <div>FilterTable</div>

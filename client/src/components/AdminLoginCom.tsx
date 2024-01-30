@@ -1,25 +1,34 @@
-import React       from 'react';
-import TextFieldUI from './UI/TextFieldUI';
-import {useForm}   from 'react-hook-form';
-import useToggle   from '../hooks/useToggle';
+import React           from 'react';
+import TextFieldUI     from './UI/TextFieldUI';
+import {useForm}       from 'react-hook-form';
+import useToggle       from '../hooks/useToggle';
+import {z}             from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
     Box,
     Button,
-    Typography }   from '@mui/material';
-import ConfirmPassword from './ConfirmPassword';
+    Typography }      from '@mui/material';
+import ForgetPassword from './ForgetPassword';
 
-type formFields = {
-    email:    string;
-    password: string;
-}
+const adminSchema = z.object({
+    email: z.string().email(),
+    password: z
+    .string()
+    .min(8,{ message: 'Invalid Password' })
+    .max(12)
+})
+type formFields = z.infer<typeof adminSchema>
 
 
 const AdminLoginCom:React.FC = () => {
     const {state, toggleState, setState} = useToggle({initialValue:false})
-    const {register, handleSubmit} = useForm<formFields>({})
+    const {register,
+         handleSubmit,
+        formState:{errors, isSubmitting}} = useForm<formFields>({resolver:zodResolver(adminSchema)})
 
-    const onSubmit = (data:formFields) => {
-        console.log(data)
+    const onSubmit = async(data:formFields) => {
+       await new Promise((resolve) => setTimeout(resolve,1000));
+       console.log(data)
     }
 
   return (
@@ -40,6 +49,7 @@ const AdminLoginCom:React.FC = () => {
                 type='text'
                 innerRef={register('email')}
             />
+              {errors.email &&  <span className="text-sm   text-bg-button ">{errors.email.message}</span>}
             <TextFieldUI 
                 id='password' 
                 size='small' 
@@ -47,10 +57,11 @@ const AdminLoginCom:React.FC = () => {
                 type='password'
                 innerRef={register('password')}
             />
+             {errors.password &&  <span className="text-sm text-bg-button ">{errors.password.message}</span>}
 
             <div className='flex w-full justify-between'>
                 <Button
-                    // disabled={true}
+                    disabled={isSubmitting}
                 type='submit'
                  sx={{
                     backgroundColor: '#EF4040', 
@@ -61,7 +72,7 @@ const AdminLoginCom:React.FC = () => {
                         color:'#E8F1F3',
                         }
                 }}>
-                    Login
+                 {isSubmitting ? "Loading..." : "Login"}
                 </Button>
 
                 <Typography 
@@ -79,7 +90,7 @@ const AdminLoginCom:React.FC = () => {
                 </Typography>
                 </div>
        </form>
-       {state && <ConfirmPassword setState={setState} state={state}/>}
+       {state && <ForgetPassword setState={setState} state={state}/>}
 </>
   )
 }

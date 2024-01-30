@@ -5,8 +5,9 @@ import {
      Button, 
      Fade, 
      Modal, 
-     Typography}  from '@mui/material';
-
+     Typography}  from '@mui/material'; 
+import TextFieldUI from './UI/TextFieldUI';
+import {useForm}   from 'react-hook-form';
 
 const style = {
   position: 'absolute',
@@ -25,12 +26,19 @@ type CPProps = {
   state : boolean;
   setState :React.Dispatch<React.SetStateAction<boolean>>; 
 }
-const ConfirmPassword:React.FC<CPProps> = ({state,setState}) => {
+
+type formfield = {
+  email:string;
+}
+
+const ForgetPassword:React.FC<CPProps> = ({state,setState}) => {
 
   const handleClose = () => setState(false);
 
-  const confirmButton = () => {
-    alert('reset password')
+  const {register, handleSubmit} = useForm<formfield>({})
+
+  const onSubmit = (data:formfield) => {
+    console.log(data)
     setState(false)
   }
 
@@ -53,16 +61,24 @@ const ConfirmPassword:React.FC<CPProps> = ({state,setState}) => {
         <Fade in={state}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Confirm Password Reset
+              Forget Password
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Are you sure you want to reset your password? A confirmation email will be sent to your registered email address.
             </Typography>
-
-            <Box className='flex flex-end mt-5 justify-between'>
-              <Button onClick={confirmButton} variant="contained" color="success"> Confirm </Button>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-4 items-start justify-center'>
+              <TextFieldUI 
+                id="email"
+                label="Email"
+                type="email"
+                size="small"
+                innerRef={register('email')}
+              />
+              <div className='flex justify-between w-full'>
+              <Button  variant="contained" color="success" type="submit"> Confirm </Button>
               <Button onClick={handleClose} variant="contained" color="error">Close</Button>
-            </Box>
+              </div>
+            </form>
           </Box>
         </Fade>
       </Modal>
@@ -70,4 +86,4 @@ const ConfirmPassword:React.FC<CPProps> = ({state,setState}) => {
   );
 }
 
-export default ConfirmPassword
+export default ForgetPassword

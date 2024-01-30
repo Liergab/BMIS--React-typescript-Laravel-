@@ -2,6 +2,7 @@ import React              from 'react'
 import ToggleButton       from '@mui/material/ToggleButton';
 import ToggleButtonGroup  from '@mui/material/ToggleButtonGroup';
 import logo               from '../assets/images/logo.png'
+import { Link } from 'react-router-dom';
 
 
 const LandingNavComp:React.FC = () => {
@@ -18,7 +19,9 @@ const LandingNavComp:React.FC = () => {
               value="left" 
               style={{ border: 'none', outline: 'none' }}
             >
-              <h1 className="text-lg font-semibold text-l-text" >Home</h1>
+             <Link to='/'>
+                <h1 className="text-lg font-semibold text-l-text" >Home</h1>
+             </Link>
 
             </ToggleButton>
 
@@ -26,7 +29,9 @@ const LandingNavComp:React.FC = () => {
               value="left"
               style={{ border: 'none', outline: 'none' }} 
             >
-              <h1 className="text-lg font-semibold text-l-text" >About</h1>
+              <Link to='/about'>
+                <h1 className="text-lg font-semibold text-l-text" >About</h1>
+              </Link>
               
             </ToggleButton>
 
@@ -34,7 +39,10 @@ const LandingNavComp:React.FC = () => {
               value="left" 
               style={{ border: 'none', outline: 'none' }}
             >
-              <h1 className="text-lg font-semibold text-l-text" >Contact</h1>
+              <Link to='/contact'>
+               <h1 className="text-lg font-semibold text-l-text" >Contact</h1>
+              </Link>
+            
 
             </ToggleButton>
 
