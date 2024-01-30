@@ -6,7 +6,7 @@ import ButtonUI       from "../components/UI/ButtonUI";
 
 const LandingPage:React.FC = () => {
   return (
-    <div className="containerLanding text-white ">
+    <div className="containerLanding text-white bg-image">
       <div className="flex flex-col  h-full py-20">
         <div className="flex justify-between items-center px-[280px]">
           <LandingNavComp />
