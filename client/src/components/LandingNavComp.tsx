@@ -22,10 +22,12 @@ const LandingNavComp:React.FC = () => {
   return (
     <>   
       <div className='flex items-center justify-between w-full '>
-        <div className="flex items-center">
-          <img src={logo} alt=""  className=' w-[40px] md:w-[90px]'/>
-          <h1 className="logo font-bold text-2xl md:text-4xl">BMIS</h1>
-        </div>
+        <Link to='/'>
+          <div className="flex items-center cursor-pointer">
+            <img src={logo} alt=""  className=' w-[40px] md:w-[90px]'/>
+            <h1 className="logo font-bold text-2xl md:text-4xl">BMIS</h1>
+          </div>
+        </Link>
         <div className='block lg:hidden'>
          <Button
            id="basic-button"
