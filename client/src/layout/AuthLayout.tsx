@@ -9,7 +9,7 @@ const AuthLayout:React.FC = () => {
   <>
     <Box className='relative w-full h-full bg-cover bg-center text-white bg2-image' > 
     <div className="flex flex-col  h-full py-[80px] md:py-[50px] gap-10 md:gap-0">
-        <div className="flex justify-between items-center px-[20px] md:px-[200px]">
+        <div className="flex justify-between items-center px-[20px] md:px-[200px] mt-[-50px] md:mt-0">
           <LandingNavComp />
         </div>
       <Box className="flex flex-col md:flex md:flex-row h-screen items-center justify-center px-[14px] md:px-28 mt-4 md:mt-8">

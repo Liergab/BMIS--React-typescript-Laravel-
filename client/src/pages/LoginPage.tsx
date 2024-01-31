@@ -25,7 +25,7 @@ const LoginPage:React.FC = () => {
     <>
     <Box className='flex rounded-md'>
         <div className='hidden md:flex flex-[4]'>
-           <img src={login} alt="" width={700} className=': bg-no-repeat bg-cover rounded-tl-2xl rounded-bl-2xl'/>
+           <img src={login} alt="" width={700} className='bg-no-repeat bg-cover rounded-tl-2xl rounded-bl-2xl'/>
         </div>
         <div className='flex p-10 gap-2
                  flex-col space-y-4 flex-[2] bg-text md:rounded-tr-2xl md:rounded-br-2xl 

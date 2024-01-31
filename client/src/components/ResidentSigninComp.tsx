@@ -1,23 +1,35 @@
-import React       from 'react'
-import TextFieldUI from './UI/TextFieldUI'
-import { Link }    from 'react-router-dom'
-import {useForm}   from 'react-hook-form'
+import React       from 'react';
+import TextFieldUI from './UI/TextFieldUI';
+import { Link }    from 'react-router-dom';
+import {useForm}   from 'react-hook-form';
+import {z}       from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
       Box, 
       Button, 
-      Typography }  from '@mui/material'
+      Typography }  from '@mui/material';
 
-type formFieldProps = {
-  firstname:       string;
-  lastname:        string;
-  email:           string;
-  password:        string;
-  confirmPassword: string;
-}
+
+const schema = z.object({
+      firstname : z.string().min(1,{message:'First Name required!'}),
+      lastname : z.string().min(1,{message:'Last Name required!'}),
+      email    : z.string().email(),
+      password : z.string().min(8,{ message: 'Invalid Password'}).max(12),
+      confirmPassword :z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+type formFieldProps = z.infer<typeof schema>
+
+
 
 const ResidentSigninComp:React.FC = () => {
 
-  const {register, handleSubmit} = useForm<formFieldProps>({})
+  const {register, 
+        handleSubmit,
+        formState:{errors, isSubmitting}} = useForm<formFieldProps>({resolver:zodResolver(schema)})
 
   const onSubmit = (data:formFieldProps) => {
     console.log(data)
@@ -37,7 +49,7 @@ const ResidentSigninComp:React.FC = () => {
                 fontSize: '12px',
             },}}
         >
-          Nice to meet you! Enter your details to register.
+           Enter your details to register!
         </Typography>
       </Box>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center space-y-4'>
@@ -48,6 +60,7 @@ const ResidentSigninComp:React.FC = () => {
           type='text'
           innerRef={register('firstname')}
         />
+           {errors.firstname&&  <span className="text-sm   text-bg-button ">{errors.firstname.message}</span>}
         <TextFieldUI 
           id='lastName' 
           size='small' 
@@ -55,6 +68,7 @@ const ResidentSigninComp:React.FC = () => {
           type='text'
           innerRef={register('lastname')}
         />
+            {errors.lastname &&  <span className="text-sm   text-bg-button ">{errors.lastname.message}</span>}
         <TextFieldUI 
           id='email' 
           size='small' 
@@ -62,6 +76,7 @@ const ResidentSigninComp:React.FC = () => {
           type='email'
           innerRef={register('email')}
         />
+            {errors.email &&  <span className="text-sm   text-bg-button ">{errors.email.message}</span>}
         <TextFieldUI 
           id='password' 
           size='small' 
@@ -69,6 +84,7 @@ const ResidentSigninComp:React.FC = () => {
           type='password'
           innerRef={register('password')}
         />
+           {errors.password &&  <span className="text-sm   text-bg-button ">{errors.password.message}</span>}
         <TextFieldUI 
           id='confirmPassword' 
           size='small' 
@@ -76,6 +92,7 @@ const ResidentSigninComp:React.FC = () => {
           type='password'
           innerRef={register('confirmPassword')}
         />
+          {errors.confirmPassword &&  <span className="text-sm   text-bg-button ">{errors.confirmPassword.message}</span>}
 
         <Button
           // disabled={true}

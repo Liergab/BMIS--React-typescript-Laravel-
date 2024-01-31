@@ -24,12 +24,12 @@ const ContactPage = () => {
             <div className='p-6 md:p-14 border-2 bg-text border-text rounded-lg'>
                 <form className='flex flex-col gap-4 '>
                 <TextField
-                    id="outlined-basic" 
+                    id="email" 
                     variant="filled" 
                     placeholder='Email'  
                 />
                 <TextField 
-                    id="outlined-basic" 
+                    id="message" 
                     variant="filled" 
                     placeholder='Message'  
                     multiline

@@ -15,11 +15,16 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
-  bgcolor: 'background.paper',
+  backgroundColor: 'background.paper',
   border: '0px solid #000',
   boxShadow: 24,
-  p: 4,
-  borderRadius:'20px'
+  padding: '40px',
+  borderRadius: '20px',
+
+  '@media (max-width: 800px)': {
+    width: '90%',
+    padding:'36px 26px'
+  },
 };
 
 type CPProps = {
@@ -42,6 +47,7 @@ const ForgetPassword:React.FC<CPProps> = ({state,setState}) => {
     setState(false)
   }
 
+
   return (
     <div>
       
@@ -63,10 +69,18 @@ const ForgetPassword:React.FC<CPProps> = ({state,setState}) => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Forget Password
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+            <Typography 
+              id="transition-modal-description" 
+              sx={{ 
+                mt: 2, 
+                fontSize:'16px',
+                '@media (max-width: 600px)': {
+                    fontSize: '12px',
+              },}}
+            >
               Are you sure you want to reset your password? A confirmation email will be sent to your registered email address.
             </Typography>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-4 items-start justify-center'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-4 items-start justify-center mt-6 md:mt-0'>
               <TextFieldUI 
                 id="email"
                 label="Email"

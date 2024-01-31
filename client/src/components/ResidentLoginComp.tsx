@@ -93,12 +93,12 @@ const ResidentLoginComp:React.FC = () => {
 
                     <Typography 
                     sx={{
-                        fontSize:'14px',
-                        color:"#508E9B",
-                        '&:hover': {
-                            cursor:'pointer',
-                            textDecoration: 'underline' 
-                        }
+                        fontWeight:'600',
+                        color:"#8492a6",
+                          fontSize:'16px',
+                          '@media (max-width: 600px)': {
+                            fontSize: '12px',
+                        },
                     }}
                     onClick={toggleState}
                     >
