@@ -95,7 +95,7 @@ const ResidentSigninComp:React.FC = () => {
           {errors.confirmPassword &&  <span className="text-sm   text-bg-button ">{errors.confirmPassword.message}</span>}
 
         <Button
-          // disabled={true}
+          disabled={isSubmitting}
           type='submit'
           sx={{
               backgroundColor: '#EF4040', 
@@ -110,7 +110,7 @@ const ResidentSigninComp:React.FC = () => {
                 fontSize: '12px',
             },
           }}>
-            Register
+            {isSubmitting ? 'Loading...' : 'Register'}
         </Button>
 
         <Typography 
