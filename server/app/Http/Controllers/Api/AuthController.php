@@ -71,21 +71,33 @@ class AuthController extends Controller
             'email'    => 'required|email',
             'password' => 'required'
         ]);
+        // Auth::shouldUse('admins');
+        if ($token = JWTAuth::attempt($validate)) {
+            
+            $user = auth()->user(); 
 
-        $token = JWTAuth::attempt($validate);
-
-        if(!empty($token)){
+            if($user->role == 'admin'){
+                return response()->json([
+                    "status"  => true,
+                    "message" => "User logged in successfully",
+                    "token"   => $token,
+                    "user"    => $user,
+                ],200);
+            }else{
+                return response()->json([
+                    "status"  => false,
+                    "message" => "Unauthorized access",
+                ],401);
+            }
+            
+        }else{
             return response()->json([
-                "status"  => true,
-                "message" => "User logged in succcessfully",
-                "token"   => $token
-            ]);
+                "status"  => 'fail',
+                "message" => "Invalid details"
+            ],401);
         }
-
-        return response()->json([
-            "status"  => false,
-            "message" => "Invalid details"
-        ]);
+    
+        
     }
 
     // loginregister
@@ -113,7 +125,7 @@ class AuthController extends Controller
                     'message' => 'Login successful',
                     'access_token' => $newToken,
                     'resident' => $res
-                ]);
+                ],200);
             }else {
                 // User is not approved
                 return response()->json([
@@ -136,7 +148,7 @@ class AuthController extends Controller
             "status"  => true,
             "message" => "Profile data",
             "data"    => $admin
-        ]);
+        ],200);
     }
 
     public function getall(){
