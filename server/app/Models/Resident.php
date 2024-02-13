@@ -21,12 +21,13 @@ class Resident extends Authenticatable implements JWTSubject
         'first_name',
         'last_name',
         'age',
+        'status',
         'email',
         'address',
-        'password',
         'birth_place',
         'birth_date',
-        'status'
+        'age',
+        'role',  
     ];
 
     /**
@@ -37,6 +38,11 @@ class Resident extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'password',
+        'updated_at',
+        'email_verified_at',
+        
     ];
 
     /**
