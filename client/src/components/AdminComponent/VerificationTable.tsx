@@ -1,85 +1,130 @@
-import React from 'react'
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
-import { Button, Typography } from '@mui/material';
+import React           from 'react';
+import toast           from 'react-hot-toast';
+import { useSelector}  from 'react-redux';
+import { RootState }   from '../../service/state/store';
+import { DataGrid,
+         GridCellParams,
+         GridToolbar  } from '@mui/x-data-grid';
 
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130},
-  { field: 'lastName', headerName: 'Last name', width: 130},
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  },
-  {
-    field: 'action',
-    headerName: 'Verify The Resident',
-    width: 300,
-    renderCell: (params: GridRenderCellParams) => (
-      <div className='flex w-full justify-center gap-6'>
-        {!params.value && (
-          <Button variant="contained" color="primary" onClick={() => console.log('approve')}>
-            Approve
-          </Button>
-        )}
-        {!params.value && (
-          <Button variant="contained" color="secondary"  onClick={() => console.log('Disapprove')}>
-            Disapprove
-          </Button>
-        )}
-      </div>
-    ),
+import { Button,
+         CircularProgress,
+        Typography,Box }             from '@mui/material';
+import ThumbUpIcon                   from '@mui/icons-material/ThumbUp';
+import ThumbDownAltIcon              from '@mui/icons-material/ThumbDownAlt';
+import { ResidentVerificationTable } from '../../types';
+import useApprovedResidentMutation   from '../../hooks/useApprovedResidentMutation';
+import useDispprovedResidentMutation from '../../hooks/useDisapprovedResidentMutation';
+
+import {FetchResidentPending } from '../../service/api/AdminQuery';
+
+
+const VISIBLE_FIELDS = ['id', 'first_name', 'last_name', 'email'];
+
+const VerrificationTable = () => {
+
+  const{adminInfo} = useSelector((state:RootState) => state.admin);
+  const token = adminInfo?.token;
+  
+  // Fetch Pending Resident
+  const {data, isLoading} = FetchResidentPending()
+  // Approve Pending Resident
+  const { mutate: approveResident, 
+          isPending:mutateLoading} = useApprovedResidentMutation();
+  //DisApprove Pending Resident
+  const { mutate: disapprovedResident, 
+          isPending:DisApproveLoading } = useDispprovedResidentMutation()
+
+  const handleApproved = async(id:number) => {
+    try {
+       await approveResident({id,token});
+       console.log(id)
+       toast.success('Approve Resident')
+    } catch (error) {
+      console.log(error)
+    }
   }
-];
+  const handleDispproved = async(id:number) => {
+    try {
+       await disapprovedResident({id ,token});
+       toast.error('DisApproved')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35},
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+  if(isLoading || mutateLoading || DisApproveLoading) return <CircularProgress />
 
-const VerificationTable:React.FC = () => {
+  const rows = (Object.values(data)[0] as ResidentVerificationTable[])?.map((p:ResidentVerificationTable) => ({
+    id: p?.id,
+    first_name: p?.first_name,
+    last_name: p?.last_name,
+    email :p?.email,
+  }));
+
+  const columns = [
+    ...VISIBLE_FIELDS.map((field) => ({
+      field,
+      headerName: field.charAt(0).toUpperCase() + field.slice(1),
+      width: 150,
+    })),
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 270,
+      renderCell: (params: GridCellParams) => (
+        <div className='flex gap-1'>
+        <Button
+          disabled={isLoading}
+          variant="outlined"
+          color="success"
+          size="small"
+          startIcon={<ThumbUpIcon />}
+          onClick={() => handleApproved(params.row.id)}
+        >
+          Approve
+        </Button>
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          startIcon={<ThumbDownAltIcon />}
+          onClick={() => handleDispproved(params.row.id)}
+        >
+          DisApprove
+        </Button>
+        </div>
+        
+      ),
+    },
+  ];
   return (
-   <>
-    <div className='flex items-center justify-between w-full'>
-          <Typography variant='h5' className='text-gray-dark' sx={{fontWeight:'600'}}>
-              Resident Table
-          </Typography>
-          <Button variant="contained" ><span className=' font-medium'>Add</span></Button>
+    <React.Fragment>
+      <div className='flex items-center w-full'>
+      
+      <Typography variant='h5' className='text-gray-dark' sx={{fontWeight:'600'}}>
+          Verify Resident
+      </Typography>
+      
       </div>
-      <div className='bg-text rounded-lg drop-shadow-2xl' style={{ height: 400, width: '100%' }}>
+      <Box sx={{  width: 1 }} className='bg-text h-[400px]  md:h-[500px] drop-shadow-xl p-4 border-0 rounded-lg'>
         <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+        rows={rows}
+        columns={columns}
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+        
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
             },
           }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-          className='rounded-lg'
         />
-      </div>
-   
-   </>
-  )
+      </Box>
+      
+    </React.Fragment>
+  );
 }
 
-export default VerificationTable
+export default VerrificationTable
