@@ -1,39 +1,89 @@
-import React       from 'react';
+import React, { useEffect }       from 'react';
 import TextFieldUI from './UI/TextFieldUI';
-import { Link }    from 'react-router-dom';
+import { Link, useNavigate }    from 'react-router-dom';
 import {useForm}   from 'react-hook-form';
 import useToggle   from '../hooks/useToggle';
 import ForgetPassword from './ForgetPassword';
 import {z}          from 'zod';
+import toast         from 'react-hot-toast'; 
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
      Box,
      Button, 
-     Typography }  from '@mui/material';
+     CircularProgress, 
+     Typography }      from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { useResidentLoginApi } from '../service/api/Auth';
+import { AxiosError }   from 'axios';
+import { useDispatch } from 'react-redux';
+import { setResidentCredentials } from '../service/state/slice/authResidentSlice';
+import { ResidentLoginSchema } from '../schemas/FormSchema';
 
-const residentSchema = z.object({
-    email: z.string().email(),
-    password: z
-    .string()
-    .min(8,{ message: 'Invalid Password' })
-    .max(12)
-})
-     
-type formFields = z.infer<typeof residentSchema>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isAxiosError(error: any): error is AxiosError {
+    return (error as AxiosError)?.isAxiosError === true;
+  }
+
+ 
+type formFields = z.infer<typeof ResidentLoginSchema>
 
 const ResidentLoginComp:React.FC = () => {
-    const {state, setState ,toggleState} = useToggle({ initialValue: false })
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const ResidentLogin = useMutation({
+        mutationFn:useResidentLoginApi,
+        onSuccess:() => {
+            navigate('/resident/dashboard')
+        }
+    });
 
-    
+
+
+    const {state,
+           setState,
+           toggleState} = useToggle({ initialValue: false });
 
     const {register, 
           handleSubmit,
-          formState:{errors, isSubmitting}} = useForm<formFields>({resolver:zodResolver(residentSchema)})
+          formState,
+          reset,
+          formState:{
+                errors, 
+                isSubmitting,
+                isSubmitSuccessful}} = useForm<formFields>({
+                    resolver:zodResolver(ResidentLoginSchema)
+                });
 
     const onSubmit = async(data:formFields) => {
-        await new  Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(data)
+        try {
+            const res = await ResidentLogin.mutateAsync(data) 
+            
+            dispatch(setResidentCredentials(res))
+        } catch (e) {
+            if (isAxiosError(e)) {
+                const errorMessage = (e.response?.data as { message?: string })?.message || 'An error occurred.';
+                toast.error(errorMessage)
+              } else {
+                console.error('Unexpected error:', e);
+            }
+        }
     }
+
+    useEffect(() => {
+        if(formState.isSubmitSuccessful){
+            return reset();
+        }
+    },[formState,reset,isSubmitSuccessful])
+
+    useEffect(() => {
+        if (errors.password) {
+          toast.error(errors.password.message!);
+        }
+        if(errors.email){
+            toast.error(errors.email.message!);
+        }
+      }, [errors.password, errors.email]);
+
 
   return (
         <>
@@ -61,16 +111,18 @@ const ResidentLoginComp:React.FC = () => {
                     label='Resident Email' 
                     type='text'
                     innerRef={register('email')}
+                    hasError={!!errors.email} 
                 />
-                 {errors.email &&  <span className="text-sm   text-bg-button ">{errors.email.message}</span>}
+                
                 <TextFieldUI 
                     id='password' 
                     size='small' 
                     label='Resident password' 
                     type='password'
                     innerRef={register('password')} 
+                    hasError={!!errors.password} 
                 />
-                 {errors.password &&  <span className="text-sm text-bg-button ">{errors.password.message}</span>}
+            
                 <div className='flex w-full items-center justify-between'>
                     <Button
                     disabled={isSubmitting}
@@ -88,19 +140,24 @@ const ResidentLoginComp:React.FC = () => {
                             fontSize: '12px',
                         },
                     }}>
-                       {isSubmitting ? "Loading..." : "Login"}
+                       {isSubmitting ?
+                        <span className='flex items-center gap-2 text-text'>
+                          <CircularProgress size={20}/> Loading...
+                        </span> 
+                         : "Login"}
                     </Button>
 
                     <Typography 
-                    sx={{
-                        fontWeight:'600',
-                        color:"#8492a6",
-                          fontSize:'16px',
-                          '@media (max-width: 600px)': {
-                            fontSize: '12px',
-                        },
-                    }}
-                    onClick={toggleState}
+                        className='cursor-pointer hover:underline'
+                        sx={{
+                            fontWeight:'600',
+                            color:"#8492a6",
+                            fontSize:'16px',
+                            '@media (max-width: 600px)': {
+                                fontSize: '12px',
+                            },
+                        }}
+                        onClick={toggleState}
                     >
                         Forget Password
                     </Typography>
@@ -121,6 +178,7 @@ const ResidentLoginComp:React.FC = () => {
             </form>
 
             {state && <ForgetPassword setState={setState} state={state}/>}
+       
 
     </>
   )
