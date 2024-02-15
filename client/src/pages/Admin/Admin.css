@@ -5,6 +5,7 @@
   }
   .scrollbar1::-webkit-scrollbar {
     width: 12px;
+    border-radius: 20px;
   }
   
   /* Track */
@@ -15,6 +16,7 @@
   /* Handle */
   .scrollbar1::-webkit-scrollbar-thumb {
     background: #888;
+    border-radius: 20px;
   }
 
   /* Handle on hover */
@@ -23,5 +25,5 @@
   }
 
   .container_padding{
-    padding-top: 130px;
+    border-radius: 20px;
   }
