@@ -10,12 +10,15 @@ import {AboutPage,
        LandingPage,
        LoginPage, 
        Register   }      from './pages';
-
+import AdminLayout       from './layout/AdminLayout';
+import ResidentLayout    from './layout/ResidentLayout';
+import { Toaster }       from 'react-hot-toast';
 
 
 const App:React.FC = () => {
   return (
     <Box className='w-full h-screen'>
+      <Toaster position='bottom-right'  toastOptions={{duration:5000}} />
       <Routes>
         <Route path='/' element={<LandingPage/>}/>
         <Route path='/about' element={<AboutPage/>}/>
@@ -24,11 +27,13 @@ const App:React.FC = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/Register' element={<Register />} />
           </Route>
-          <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
-          <Route path='/resident/dashboard' element={<ResidentDashboard/>}/>
+          <Route element={<AdminLayout/>}>
+            <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
+          </Route>
+          <Route element={<ResidentLayout/>}>
+            <Route path='/resident/dashboard' element={<ResidentDashboard/>}/>
+          </Route>
       </Routes>
-      
-      
     </Box>
   )
 }
