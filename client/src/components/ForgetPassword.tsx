@@ -15,6 +15,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
+  maxHeight: '80vh',  // Set the maximum height of the modal
+  overflowY: 'auto',  // Add a scrollbar when content exceeds the height
   backgroundColor: 'background.paper',
   border: '0px solid #000',
   boxShadow: 24,
@@ -23,7 +25,7 @@ const style = {
 
   '@media (max-width: 800px)': {
     width: '90%',
-    padding:'36px 26px'
+    padding: '36px 26px'
   },
 };
 
@@ -70,6 +72,7 @@ const ForgetPassword:React.FC<CPProps> = ({state,setState}) => {
               Forget Password
             </Typography>
             <Typography 
+           
               id="transition-modal-description" 
               sx={{ 
                 mt: 2, 
