@@ -1,39 +1,100 @@
-import React       from 'react';
+import React, { useEffect }       from 'react';
 import TextFieldUI from './UI/TextFieldUI';
-import { Link }    from 'react-router-dom';
+import {Link}      from 'react-router-dom';
 import {useForm}   from 'react-hook-form';
-import {z}       from 'zod';
+import {z}         from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-      Box, 
-      Button, 
-      Typography }  from '@mui/material';
+import {Box, 
+       Button, 
+       CircularProgress, 
+       Typography }  from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { useResidentSignApi } from '../service/api/Auth';
+import { AxiosError } from 'axios';
+import { ResidentSigninSchema } from '../schemas/FormSchema';
+import toast from 'react-hot-toast';
 
 
-const schema = z.object({
-      firstname : z.string().min(1,{message:'First Name required!'}),
-      lastname : z.string().min(1,{message:'Last Name required!'}),
-      email    : z.string().email(),
-      password : z.string().min(8,{ message: 'Invalid Password'}).max(12),
-      confirmPassword :z.string()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isAxiosError(error: any): error is AxiosError {
+  return (error as AxiosError)?.isAxiosError === true;
+}
 
-type formFieldProps = z.infer<typeof schema>
+type formFieldProps = z.infer<typeof ResidentSigninSchema>
 
 
 
 const ResidentSigninComp:React.FC = () => {
 
+  // const navigate = useNavigate();
+  const ResidentSignin = useMutation({
+    mutationFn:useResidentSignApi,
+  })
+
   const {register, 
         handleSubmit,
-        formState:{errors, isSubmitting}} = useForm<formFieldProps>({resolver:zodResolver(schema)})
+        reset,
+        formState,
+        formState:{errors, 
+                  isSubmitting, 
+                  isSubmitSuccessful}} = useForm<formFieldProps>({
+                    resolver:zodResolver(ResidentSigninSchema)
+                  });
 
-  const onSubmit = (data:formFieldProps) => {
-    console.log(data)
-  }
+  const onSubmit = async(data:formFieldProps) => {
+    try {
+      const res = await ResidentSignin.mutateAsync(data);
+      toast.success('Successful register, please wait for the Approval of your Account.', {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: '#713200',
+        },
+        iconTheme: {
+          primary: '#713200',
+          secondary: '#FFFAEE',
+        },
+      });
+      console.log(res)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const errorMessage = (e.response?.data as { message?: string })?.message || 'An error occurred.';
+       toast.error(errorMessage)
+      } else {
+        console.error('Unexpected error:', e);
+    }
+    }
+  };
+
+  useEffect(() => {
+    if(formState.isSubmitSuccessful){
+        reset();
+        
+    }
+  },[formState, isSubmitSuccessful,reset]);
+
+  useEffect(() => {
+    if (errors.password) {
+      toast.error(errors.password.message!);
+    }
+    if(errors.email){
+        toast.error(errors.email.message!);
+    }
+    if(errors.first_name){
+      toast.error(errors.first_name.message!);
+    }
+    if(errors.last_name){
+    toast.error(errors.last_name.message!);
+    }
+    if(errors.password_confirmation){
+    toast.error(errors.password_confirmation.message!);
+    }
+  }, [errors.password,
+      errors.email, 
+      errors.first_name,
+      errors.last_name, 
+      errors.password_confirmation]);
+
   return (
     <>
       <Box className="flex flex-col">
@@ -54,45 +115,50 @@ const ResidentSigninComp:React.FC = () => {
       </Box>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center space-y-4'>
         <TextFieldUI 
-          id='firstName' 
+          id='first_name' 
           size='small' 
           label='Resident First Name' 
           type='text'
-          innerRef={register('firstname')}
+          innerRef={register('first_name')}
+          hasError={!!errors.first_name} 
         />
-           {errors.firstname&&  <span className="text-sm   text-bg-button ">{errors.firstname.message}</span>}
+          
         <TextFieldUI 
-          id='lastName' 
+          id='last_name'
           size='small' 
           label='Resident Last Name' 
           type='text'
-          innerRef={register('lastname')}
+          innerRef={register('last_name')}
+          hasError={!!errors.last_name} 
         />
-            {errors.lastname &&  <span className="text-sm   text-bg-button ">{errors.lastname.message}</span>}
+           
         <TextFieldUI 
           id='email' 
           size='small' 
           label='Resident Email' 
           type='email'
           innerRef={register('email')}
+          hasError={!!errors.email} 
         />
-            {errors.email &&  <span className="text-sm   text-bg-button ">{errors.email.message}</span>}
+           
         <TextFieldUI 
           id='password' 
           size='small' 
           label='Password' 
           type='password'
           innerRef={register('password')}
+          hasError={!!errors.password} 
         />
-           {errors.password &&  <span className="text-sm   text-bg-button ">{errors.password.message}</span>}
+          
         <TextFieldUI 
-          id='confirmPassword' 
+          id='password_confirmation' 
           size='small' 
           label='Confirm Password' 
           type='password'
-          innerRef={register('confirmPassword')}
+          innerRef={register('password_confirmation')}
+          hasError={!!errors.password_confirmation} 
         />
-          {errors.confirmPassword &&  <span className="text-sm   text-bg-button ">{errors.confirmPassword.message}</span>}
+         
 
         <Button
           disabled={isSubmitting}
@@ -110,22 +176,30 @@ const ResidentSigninComp:React.FC = () => {
                 fontSize: '12px',
             },
           }}>
-            {isSubmitting ? 'Loading...' : 'Register'}
+            {isSubmitting ?  
+            <span className='flex items-center gap-2 text-text'>
+              <CircularProgress size={20}/> Loading...
+            </span>
+            : 'Register'}
         </Button>
 
         <Typography 
-                  sx={{
-                      fontWeight:'600',
-                      color:"#8492a6",
-                      fontSize:'16px',
-                      '@media (max-width: 600px)': {
-                        fontSize: '12px',
-                    },
-                  }}>
-                      Dont have an account? {" "}
-                      <Link to='/login'><span className='text-primary text-[12px] md:text-[16px]'>sign in</span></Link>
-                  </Typography>
+            sx={{
+                fontWeight:'600',
+                color:"#8492a6",
+                fontSize:'16px',
+                '@media (max-width: 600px)': {
+                  fontSize: '12px',
+                  },
+              }}
+          >
+            Dont have an account? {" "}
+            <Link to='/login'>
+              <span className='text-primary text-[12px] md:text-[16px]'>sign in</span>
+            </Link>
+          </Typography>
       </form>
+      
   </>
   )
 }
