@@ -14,25 +14,26 @@ const AboutPage = () => {
                 <h1 className="text-text text-2xl md:text-6xl font-bold">ABOUT US</h1>
                 <div className='flex flex-col items-center gap-4'>
                     <h2 className="max-w-md text-xs md:text-base text-justify text-l-text ">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </h2>
                     <h2 className="max-w-md text-xs md:text-base  text-justify text-l-text ">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </h2>
                     <Button 
-                    type='button' 
-                    sx={{
-                        background:'#EF4040', 
-                        color:'white',
-                        fontSize:'14px',
-                        '&:hover':{
+                        type='button' 
+                        sx={{
                             background:'#EF4040', 
                             color:'white',
-                        }, '@media (max-width: 600px)': {
-                            fontSize: '10px',
-                        },
-                    }}>
-                        Terms and Condition
+                            fontSize:'14px',
+                            '&:hover':{
+                                background:'#EF4040', 
+                                color:'white',
+                            }, '@media (max-width: 600px)':{
+                                fontSize: '10px',
+                            },
+                         }}
+                    >
+                      Terms and Condition
                     </Button>
                 </div>
             </div>
