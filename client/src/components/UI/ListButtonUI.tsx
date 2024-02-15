@@ -8,7 +8,7 @@ type ListProps = {
     icon        : ReactElement;
     label       : string;
     selnum      : number;
-    eventnum       : number;
+    eventnum    : number;
     onItemClick : (index: number) => void;
 }
 
@@ -28,7 +28,7 @@ const ListButtonUI:React.FC<ListProps> = ({icon , label, selnum, eventnum, onIte
             <ListItemIcon>
                 {icon}
             </ListItemIcon>
-            <ListItemText primary={label}  />
+            <ListItemText primary={label}/>
         </ListItem>                   
     </ListItemButton>
     </>
