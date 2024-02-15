@@ -8,13 +8,15 @@ interface TextFieldUIProps  {
   type?    : string;
   size?    : 'small' | 'medium';
   innerRef : UseFormRegisterReturn;
+  hasError?: boolean;
 }
 
-const TextFieldUI: React.FC<TextFieldUIProps> = ({id, label, type, size,innerRef}) => {
+const TextFieldUI: React.FC<TextFieldUIProps> = ({id, label, type, size,innerRef, hasError}) => {
   const style = {
     borderRadius: "8px",
     background: "#E7E8E9",
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    border: hasError ? '1px solid red' : 'none',
     "& fieldset": { border: 'none' }
 }
   return (
