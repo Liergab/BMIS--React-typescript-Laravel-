@@ -142,7 +142,7 @@ const ResidentLoginComp:React.FC = () => {
                     }}>
                        {isSubmitting ?
                         <span className='flex items-center gap-2 text-text'>
-                          <CircularProgress size={20}/> Loading...
+                          <CircularProgress size={20}/> ...
                         </span> 
                          : "Login"}
                     </Button>

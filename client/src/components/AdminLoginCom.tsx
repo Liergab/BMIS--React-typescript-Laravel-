@@ -137,8 +137,8 @@ const AdminLoginCom:React.FC = () => {
                     },
                 }}>
                  {isSubmitting ?
-                  <span className='flex items-center gap-2 text-text'>
-                    <CircularProgress size={20}/> Loading...
+                  <span className='flex items-center gap-2 justify-center text-text text-[16px]'>
+                    <CircularProgress size={20}/>...
                   </span>  
                   : "Login"}
                 </Button>

@@ -8,7 +8,7 @@ import { Button,
          Typography,
          Box     }          from '@mui/material';
 
-import React, { useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import EditIcon             from '@mui/icons-material/Edit';
 import VisibilityIcon       from '@mui/icons-material/Visibility';
 import PersonAddIcon        from '@mui/icons-material/PersonAdd';
@@ -81,6 +81,8 @@ const ResidentTable = () => {
     },
   ];
 
+  
+
   const handleView = (id:number) => {
     setOpenView((prev) => !prev)
     setIdView(id)
@@ -124,7 +126,7 @@ const ResidentTable = () => {
           }}
         />
       </Box>
-      {openView && <View openView={openView} setOpenView={setOpenView} id={idView}/>}
+      {openView && <View openView={openView} setOpenView={setOpenView} id={idView} setidView={setIdView}/>}
       {openEdit && <EditResident openEdit={openEdit} setOpenEdit={setOpenEdit} id={idEdit}/>}
     </React.Fragment>
   );
